@@ -2,6 +2,7 @@ package com.macadribacks.user_service.service;
 
 import com.macadribacks.user_service.dto.UserDTO;
 import com.macadribacks.user_service.entity.User;
+import com.macadribacks.user_service.exception.UserNotFoundException;
 import com.macadribacks.user_service.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,12 +34,12 @@ public class UserService {
     public UserDTO getUserById(Long id) {
         return userRepository.findById(id)
                 .map(this::toDto)
-                .orElse(null);
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     public void updateUser(Long id, UserDTO userDTO) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         user.setName(userDTO.name());
         user.setSurname(userDTO.surname());
         user.setEmail(userDTO.email());
@@ -50,7 +51,7 @@ public class UserService {
 
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException("User not found"));
         userRepository.delete(user);
     }
 
