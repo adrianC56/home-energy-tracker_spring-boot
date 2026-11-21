@@ -94,7 +94,7 @@ public class UsageService {
         // Getting user-device mapping and aggregate per user
         Map<Long, List<DeviceEnergy>> userDeviceEnergyMap =
                 deviceEnergies.stream()
-                        .collect(Collectors.groupingBy(DeviceEnergy::getDeviceId));
+                        .collect(Collectors.groupingBy(DeviceEnergy::getUserId));
 
         log.info("User-Device Energy Map: {}", userDeviceEnergyMap);
 
