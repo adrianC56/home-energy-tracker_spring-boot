@@ -8,5 +8,6 @@ public record DeviceDTO(
         String name,
         String type,
         String location,
-        Long userId
+        Long userId,
+        Double energyConsumed
 ) {}
