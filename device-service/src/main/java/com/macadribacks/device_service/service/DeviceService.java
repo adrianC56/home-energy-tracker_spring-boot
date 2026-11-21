@@ -6,6 +6,8 @@ import com.macadribacks.device_service.exception.DeviceNotFoundException;
 import com.macadribacks.device_service.repository.DeviceRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DeviceService {
 
@@ -49,6 +51,13 @@ public class DeviceService {
             throw new DeviceNotFoundException("Device not found with id " + id);
         }
         deviceRepository.deleteById(id);
+    }
+
+    public List<DeviceDTO> getAllDevicesByUserId(Long userId) {
+        List<Device> devices = deviceRepository.findAllByUserId(userId);
+        return devices.stream()
+                .map(this::mapToDTO)
+                .toList();
     }
 
 
