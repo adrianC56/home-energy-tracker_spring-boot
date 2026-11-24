@@ -9,6 +9,8 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.Arrays;
+
 @Configuration
 public class SecurityConfig {
 
@@ -20,9 +22,13 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        String[] excludedPaths = Arrays.stream(excludedUrls.split(","))
+                .map(String::trim)
+                .toArray(String[]::new);
+
         return http.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-                        .requestMatchers(excludedUrls).permitAll()
+                        .requestMatchers(excludedPaths).permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(oauth ->
                         oauth.jwt(Customizer.withDefaults()))
